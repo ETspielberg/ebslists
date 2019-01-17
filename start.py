@@ -2,6 +2,7 @@ import csv
 import json
 import requests
 import math
+import os
 
 from flask import Flask
 from flask import request
@@ -18,6 +19,9 @@ location = app.config.get("LIBINTEL_UPLOAD_DIR") + "\\ebslists\\"
 
 @app.route('/ebslists', methods=['POST'])
 def ebslist():
+    if not os.path.exists(location):
+        os.makedirs(location)
+
     # reading parameters from HTTP-request
     ebs_filename = request.form['filename']
     ebs_model = request.form['model']
@@ -41,6 +45,8 @@ def ebslist():
 def load_data(filename, ebs_model):
     with open(location + filename, 'r') as csvfile:
         linereader = csv.reader(csvfile, delimiter=';')
+        if not os.path.exists(location + "\\" + ebs_model + "\\"):
+            os.makedirs(location + "\\" + ebs_model + "\\")
         ebs_titles = []
         for row in linereader:
             try:
@@ -185,7 +191,7 @@ def persist_ebs_list(ebs_titles):
 
 
 def save_ebs_list_file(ebs_titles, ebs_filename, ebs_model, ebs_mode):
-    with open(location + ebs_filename.replace(".csv", "_") + ebs_mode + "_out.csv", 'w', newline='') as csvfile:
+    with open(location + "\\" + ebs_model + "\\" + ebs_filename.replace(".csv", "_") + ebs_mode + "_out.csv", 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(['ISBN', 'Title', 'Subject area', 'price', 'year', 'total usage', 'price per usage', 'selected', 'EBS model ID', 'weighting factor'])

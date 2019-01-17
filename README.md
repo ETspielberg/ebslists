@@ -14,7 +14,7 @@ $ git clone https://github.com/ETspielberg/ebslists
 ```
 
 
-### Install requeirements
+### Install requirements
 
 The programme is written as python flask application. 
 Necessary dependencies are listed in the requirements.txt and can be installed via
@@ -33,7 +33,7 @@ In any case, a subdirectory `/ebslists` is appended.
 LIBINTEL_UPLOAD_DIR = "${USER_HOME}/.libintel/uploads"
 ```
 
-## file format
+## File format
 
 The file containing the usage data needs to have the following columns.
 
@@ -41,7 +41,7 @@ The file containing the usage data needs to have the following columns.
 ISBN; title; subject area; year; total usage; price; ...
 ```
 
-### Start-Up
+### Start up
 
 To start the application the virtual environment has to be activated.
 After that some environmental parameters need to be set for the flask application.
