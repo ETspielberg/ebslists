@@ -6,6 +6,7 @@ import os
 
 from flask import Flask
 from flask import request
+import py_eureka_client.eureka_client as eureka_client
 from statistics import mean
 
 from model.EbsTitle import EbsTitle
@@ -13,6 +14,10 @@ from model.EbsTitle import EbsTitle
 app = Flask(__name__)
 # app.config.from_object('yourapplication.default_settings')
 app.config.from_envvar("LIBINTEL_SETTINGS")
+your_rest_server_port = 5000
+eureka_client.init_registry_client(eureka_server="http://localhost:8761/eureka",
+                                app_name="ebs-analyzer",
+                                instance_port=your_rest_server_port)
 
 location = app.config.get("LIBINTEL_UPLOAD_DIR") + "\\ebslists\\"
 
@@ -57,7 +62,7 @@ def load_data(filename, ebs_model):
                 subject_area = row[2]
                 price_string = row[5]
                 if "." in price_string:
-                    price_string = price_string.replace(".", "")
+                    price_string = price_string.replace(".", ",")
                 try:
                     price = float(price_string)
                 except ValueError:
